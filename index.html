@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Previsão do Tempo</title>
+    <!-- Adicionar CSS se desejar -->
+</head>
+<body>
+    <h1>Verificar Previsão do Tempo</h1>
+    <form id="form-cidade">
+        <label for="input-cidade">Digite a Cidade (ex: Boston,MA,USA):</label>
+        <input type="text" id="input-cidade" name="cidade" required>
+        <button type="submit">Buscar Previsão</button>
+    </form>
+
+    <h2>Resultado:</h2>
+    <div id="resultado-previsao">
+        <!-- A previsão será exibida aqui -->
+    </div>
+
+    <script>
+        // JavaScript para lidar com o envio do formulário
+        // e exibir os resultados
+        const formCidade = document.getElementById('form-cidade');
+        const inputCidade = document.getElementById('input-cidade');
+        const divResultado = document.getElementById('resultado-previsao');
+
+        formCidade.addEventListener('submit', async (evento) => {
+            evento.preventDefault(); // Impede o recarregamento da página
+            const cidade = inputCidade.value;
+            divResultado.innerHTML = 'Buscando...'; // Feedback para o usuário
+
+            try {
+                // Faz uma requisição para o seu backend Python
+                const resposta = await fetch('/previsao', { // '/previsao' é um endpoint que você definirá no backend
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ cidade: cidade })
+                });
+
+                if (!resposta.ok) {
+                    throw new Error(`Erro na requisição: ${resposta.statusText}`);
+                }
+
+                const dados = await resposta.json(); // Espera-se que o backend retorne JSON
+
+                // Formata e exibe os dados (exemplo simples)
+                if (dados.erro) {
+                     divResultado.innerHTML = `<p>Erro: ${dados.erro}</p>`;
+                } else if (dados.previsao && dados.previsao.length > 0) {
+                    let htmlResultado = '<table><thead><tr><th>Data</th><th>Max</th><th>Min</th><th>Condição</th><th>Chuva (%)</th></tr></thead><tbody>';
+                    dados.previsao.forEach(dia => {
+                        htmlResultado += `<tr><td>${dia.Data}</td><td>${dia['Temp Max']}</td><td>${dia['Temp Min']}</td><td>${dia.Condicoes}</td><td>${dia['Precipitacao (%)']}</td></tr>`;
+                    });
+                    htmlResultado += '</tbody></table>';
+                    divResultado.innerHTML = htmlResultado;
+                } else {
+                     divResultado.innerHTML = '<p>Nenhuma previsão encontrada.</p>';
+                }
+
+            } catch (erro) {
+                console.error("Erro ao buscar previsão:", erro);
+                divResultado.innerHTML = `<p>Ocorreu um erro ao buscar a previsão. Tente novamente. Detalhe: ${erro.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
