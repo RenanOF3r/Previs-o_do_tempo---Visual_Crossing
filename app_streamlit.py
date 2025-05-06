@@ -97,7 +97,7 @@ with col1:
     # Input para a cidade, com valor padrão para facilitar
     cidade_input = st.text_input(
         "Digite a localização:",
-        value="Boston,MA,USA",
+        value="Rio de Janeiro,RJ,Brasil",
         placeholder="Ex: Paris,France / Tokyo,Japan / Rio de Janeiro,Brazil"
     )
 
