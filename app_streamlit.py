@@ -12,7 +12,7 @@ def buscar_previsao_visualcrossing(cidade, chave_api):
     url_base = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline"
     params = {
         'unitGroup': UNIDADE_MEDIDA,
-        'key': chave_api,
+        'key': VISUALCROSSING_API_KEY,
         'contentType': 'json',
         'include': 'days'
     }
