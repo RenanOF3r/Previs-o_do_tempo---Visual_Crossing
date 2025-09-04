@@ -115,4 +115,4 @@ def obter_previsao():
 if __name__ == '__main__':
     # Use '0.0.0.0' para ser acessível na rede local, se necessário
     # debug=True é útil durante o desenvolvimento, mas desative em produção
-    app.run(debug=True, port=5001) # Usa porta 5001 para evitar conflito com outras apps
+    app.run(debug=True, port=5001, use_reloader=False) # Usa porta 5001 para evitar conflito com outras apps
