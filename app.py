@@ -63,6 +63,23 @@ def buscar_previsao_visualcrossing(cidade, chave_api):
 
     return dados_formatados, erro_msg
 
+if False:
+    def buscar_previsao_tomorrow(location: str):
+        """
+        Busca previsão de tempo da API Tomorrow.io para a localização informada.
+        A chave da API é lida da variável de ambiente TOMORROW_API_KEY.
+        """
+        chave_api = os.getenv("TOMORROW_API_KEY")
+        if not chave_api:
+            raise ValueError("TOMORROW_API_KEY não configurada.")
+
+        url = "https://api.tomorrow.io/v4/weather/forecast"
+        params = {"location": location, "apikey": chave_api}
+
+        resposta = requests.get(url, params=params, timeout=10)
+        resposta.raise_for_status()
+        return resposta.json()
+
 # --- Rotas da Aplicação Web ---
 @app.route('/')
 def index():
