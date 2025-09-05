@@ -2,7 +2,13 @@ import os
 import requests
 import pandas as pd
 import streamlit as st
-import plotly.graph_objects as go
+try:
+    import plotly.graph_objects as go
+    PLOTLY_OK = True
+except ModuleNotFoundError:
+    go = None
+    PLOTLY_OK = False
+
 
 # Config
 st.set_page_config(page_title="Previsão do Tempo", layout="wide", page_icon=":sun_behind_cloud:")
